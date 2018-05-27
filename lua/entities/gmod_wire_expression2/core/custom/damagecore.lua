@@ -157,14 +157,14 @@ hook.Add("EntityRemoved", "E2DmgClkRemove", function(ent)
 	end
 end)
 
-hook.Add("EntityTakeDamage","Expresion2TakeDamageInfo", function( targat, dmginfo )
-	victim = targat
+hook.Add("EntityTakeDamage","Expresion2TakeDamageInfo", function( target, dmginfo )
+	victim = target
 	damageTab = damagetotab(dmginfo)
 	damageInfo = dmginfo
 	damageClk = 1
 
 	for ent,_ in pairs(registered_e2s) do
-		if IsValid(ent) and IsValid(targat) and damageInfo then
+		if IsValid(ent) and IsValid(target) and damageInfo then
 			if ent.context.data.dmgtriggerbyall or ent.context.data.dmgtriggerents[victim] then
 				ent:Execute()
 			end
