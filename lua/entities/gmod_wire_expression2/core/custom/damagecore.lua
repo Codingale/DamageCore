@@ -332,30 +332,30 @@ end
 local sbox_E2_Dmg_Simple = CreateConVar( "sbox_E2_Dmg_Simple", "2", FCVAR_ARCHIVE )
 
 e2function void entity:dmgApplyDamage(number damage)
-	if not IsValid(this) then return nil end
+	if not IsValid(this) then return end
 
 	if sbox_E2_Dmg_Simple:GetInt() == 2 then
 		if this:IsPlayer() then
 			if not isfriend(self.player, this) then
-				return nil
+				return
 			end
 		else
 			if CPPI then
 				if this.CPPICanDamage then
 					if not this:CPPICanDamage(self.player) then
-						return nil
+						return
 					end
 				else
 					if not isfriend(this:CPPIGetOwner(), self.player) then
-						return nil
+						return
 					end
 				end
 			end
 		end
 	elseif sbox_E2_Dmg_Simple:GetInt() == 3 and not self.player:IsAdmin() then
-		return nil
+		return
 	elseif sbox_E2_Dmg_Simple:GetInt() == 4 then
-		return nil
+		return
 	end
 
 	local dmginfo = DamageInfo()
