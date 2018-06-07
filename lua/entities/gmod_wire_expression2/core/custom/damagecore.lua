@@ -91,7 +91,7 @@ local function tabtodamage(tab)
     return dmg
 end
 
-registerType("damage", "dmg", DamageInfo(),
+registerType("damage", "xow", DamageInfo(),
      function(self, input)
          if IsEmpty(input) then
              return table.Copy(DEFAULT)
@@ -108,7 +108,7 @@ registerType("damage", "dmg", DamageInfo(),
      end
 )
 
-registerOperator("ass", "dmg", "dmg", function(self, args)
+registerOperator("ass", "xow", "xow", function(self, args)
     local lhs, op2, scope = args[2], args[3], args[4]
     local      rhs = op2[1](self, op2)
 
@@ -156,7 +156,7 @@ hook.Add("EntityRemoved", "E2DmgClkRemove", function(ent)
     end
 end)
 
-hook.Add("EntityTakeDamage","Expresion2TakeDamageInfo", function( target, dmginfo )
+hook.Add("EntityTakeDamage", "Expresion2TakeDamageInfo", function( target, dmginfo )
     victim = target
     damageTab = damagetotab(dmginfo)
     damageInfo = dmginfo
@@ -314,12 +314,16 @@ end
 
 -------------------------------------------------------------------------
 
-local function isfriend(ply1, ply2)
+local function IsFriend(ply1, ply2)
     if not CPPI then
         return true
     end
-
-    for k, v in pairs( ply2:CPPIGetFriends() )  do
+    if not IsValid(ply1) or not IsValid(ply2) then return false end -- or false?
+    
+    local friends = ply2:CPPIGetFriends()
+    if not friends or type(friends) ~= "table" then return false end
+    
+    for k, v in pairs( friends )  do
         if v == ply1 then
             return true
         end
@@ -335,7 +339,7 @@ e2function void entity:dmgApplyDamage(number damage)
 
     if sbox_E2_Dmg_Simple:GetInt() == 2 then
         if this:IsPlayer() then
-            if not isfriend(self.player, this) then
+            if not IsFriend(self.player, this) then
                 return
             end
         else
@@ -345,7 +349,7 @@ e2function void entity:dmgApplyDamage(number damage)
                         return
                     end
                 else
-                    if not isfriend(this:CPPIGetOwner(), self.player) then
+                    if not IsFriend(this:CPPIGetOwner(), self.player) then
                         return
                     end
                 end
@@ -395,7 +399,7 @@ e2function void lastDamageOverride(damage dmg)
 
         if sbox_E2_Dmg_Override:GetInt() == 2 then
             if victim:IsPlayer() then
-                if not isfriend(self.player, victim) then
+                if not IsFriend(self.player, victim) then
                     return nil
                 end
             else
@@ -553,7 +557,7 @@ local sbox_E2_Dmg_Adv = CreateConVar( "sbox_E2_Dmg_Adv", "2", FCVAR_ARCHIVE )
 local function candamage(ply, ent)
     if sbox_E2_Dmg_Adv:GetInt() == 2 and CPPI then
         if ent:IsPlayer() then
-            if not isfriend(ply, ent) then
+            if not IsFriend(ply, ent) then
                 return false
             end
         else
