@@ -142,7 +142,7 @@ registerCallback("construct", function(self)
     self.data.dmgtriggerents = {}
 end)
 
-registerCallback("destruct",function(self)
+registerCallback("destruct", function(self)
     registered_e2s[self.entity] = nil
 end)
 
@@ -283,12 +283,12 @@ e2function entity dmgVictim()
 end
 
 e2function vector dmgPos()
-    if not damageTab or not victim then return Vector(0,0,0) end
+    if not damageTab or not victim then return Vector(0, 0, 0) end
     return damageTab.Pos
 end
 
 e2function vector dmgForce()
-    if not damageTab or not victim then return Vector(0,0,0) end
+    if not damageTab or not victim then return Vector(0, 0, 0) end
     return damageTab.Force
 end
 
@@ -436,7 +436,7 @@ local ids = {
     ["IsFallDamage"] = "n"
 }
 
-local DEFAULT = {n={},ntypes={},s={},stypes={},size=0}
+local DEFAULT = {n={}, ntypes={}, s={}, stypes={}, size=0}
 
 e2function table damage:toTable()
     if not this then return DEFAULT end
@@ -469,12 +469,12 @@ e2function number damage:getDamage()
 end
 
 e2function vector damage:getForce()
-    if not this then return Vector(0,0,0) end
+    if not this then return Vector(0, 0, 0) end
     return this.Force
 end
 
 e2function vector damage:getPosition()
-    if not this then return Vector(0,0,0) end
+    if not this then return Vector(0, 0, 0) end
     return this.Pos
 end
 
